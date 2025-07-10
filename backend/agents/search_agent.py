@@ -1,7 +1,11 @@
 import os
 import httpx
+import dotenv
+
+dotenv.load_dotenv()
 
 SERPAPI_API_KEY = os.getenv("SERPAPI_API_KEY")
+print(f"SERPAI_API_KEY: {SERPAPI_API_KEY}")
 
 async def search_domains(product_description: str, top_k=5) -> list[str]:
     url = "https://serpapi.com/search"
