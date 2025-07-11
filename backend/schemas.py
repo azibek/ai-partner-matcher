@@ -12,3 +12,7 @@ class PartnerMatch(BaseModel):
     decision_maker: str
     contact_email: str
     ai_drafted_email: str
+
+class DiscoveryInput(BaseModel):
+    product_description: str
+    company_description: str = ""
