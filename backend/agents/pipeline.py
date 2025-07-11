@@ -9,6 +9,7 @@ from backend.agents.html_info_extracter_agent import extract_company_info
 from backend.db.crud import upsert_company
 from backend.db.session import SessionLocal
 from backend.db.models import Company
+from backend.agents.utils.util_gsearch import fetch_duckduckgo_results
 
 from loguru import logger
 
@@ -23,7 +24,7 @@ async def run_discovery_pipeline(product_description: str) -> List[Company]:
         all_domains = set()
         for query in queries:
             logger.info(f"Searching domains for: {query}")
-            domains = await search_domains(query)
+            domains = await fetch_duckduckgo_results(query)
             logger.info(f"Found {len(domains)} domains")
             all_domains.update(domains)
 

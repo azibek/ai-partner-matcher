@@ -25,6 +25,7 @@ async def fetch_duckduckgo_results(query: str, num: int = 5) -> List[str]:
         if not url.startswith("https://duckduckgo.com")
         and not url.endswith(".png")
         and "yahoo.com" not in url
+        and not url.lower().endswith('dtd')
     ]
 
     # Deduplicate and limit

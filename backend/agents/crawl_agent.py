@@ -21,7 +21,17 @@ class CompanyProfile:
 async def fetch_html(url: str, timeout: int = settings.CRAWLER_TIMEOUT) -> str:
     try:
         async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.get(url)
+            headers = {
+                "User-Agent": (
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/115.0.0.0 Safari/537.36"
+                ),
+                "Accept-Language": "en-US,en;q=0.9",
+                "Accept": "text/html,application/xhtml+xml"
+            }
+
+            response = await client.get(url, headers=headers)
             response.raise_for_status()
             return response.text
     except Exception as e:
@@ -57,8 +67,8 @@ def extract_base_info(html: str, base_url: str) -> CompanyProfile:
     return CompanyProfile(name=name, description=description, contact_links=list(set(links)))
 
 
-async def crawl_company(url: str) -> CompanyProfile:
-    html = await fetch_html(url)
+async def crawl_company(url: str) -> str:
+    return await fetch_html(url)
     if not html:
         return CompanyProfile()
     return extract_base_info(html, url)
