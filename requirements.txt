@@ -2,3 +2,5 @@ uvicorn
 fastapi
 dotenv
 openai
+tldextract
+sqlalchemy
