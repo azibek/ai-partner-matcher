@@ -7,6 +7,7 @@ from backend.db.init_db import init_db
 from backend.db.models import Company
 from backend.schemas import DiscoveryInput
 from backend.agents.pipeline import run_discovery_pipeline
+from backend.agents_v2.agents_orchestrator import run_discovery_pipeline_v2
 import traceback
 from contextlib import asynccontextmanager
 
@@ -64,6 +65,16 @@ async def discover_partners(payload: DiscoveryInput):
     try:
         companies = await run_discovery_pipeline(payload.product_description)
         return [c.as_dict() for c in companies]
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+    
+
+@app.post("/agent_v2")
+async def discover_partners_v2(payload: DiscoveryInput):
+    try:
+        companies = await run_discovery_pipeline_v2(payload.product_description, payload.company_description)
+        return companies
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
